@@ -45,8 +45,10 @@ class SlideInPresentationController: UIPresentationController {
     
     switch direction {
     case .right:
+      //If presenting start from right, the displayed view's x-coordinate is ending at 1/3 points from its super view.
       frame.origin.x = containerView!.frame.width*(1.0/3.0)
     case .bottom:
+      //If presenting start from bottom, the displayed view's y-coordinate is ending at 1/3 points from its super view.
       frame.origin.y = containerView!.frame.height*(1.0/3.0)
     default:
       frame.origin = .zero

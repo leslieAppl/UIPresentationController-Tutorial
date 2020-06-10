@@ -48,10 +48,10 @@ class SlideInPresentationManager: NSObject {
 extension SlideInPresentationManager: UIViewControllerTransitioningDelegate {
   
   //MARK: Step 18
-  //Here you instantiate a SlideInPresentationController with the direction from SlideInPresentationManager
-  
   //When you present a view controller using the UIModalPresentationStyle.custom presentation style, the system calls this method and asks for the presentation controller that manages your custom style. If you implement this method, use it to create and return the custom presentation controller object that you want to use to manage the presentation process.
   func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
+    
+    //Here you instantiate a SlideInPresentationController with the direction from SlideInPresentationManager
     let presentationController = SlideInPresentationController(presentedViewController: presented, presenting: presenting, direction: direction)
     return presentationController
   }
