@@ -36,4 +36,13 @@
 
 ## Creating the Animation Controller
 - To slide in the Summer and Winter menus from the side
+            
+        //To add a custom animation transition, you’ll create a subclass of NSObject 
+        //that conforms to UIViewControllerAnimatedTransitioning.
+        
+        //For complex animations you’d usually create two controllers 
+        //— one for presentation and one for dismissal. 
+        //In the case of this app, dismissal mirrors presentation, 
+        //so you only need one animation controller.
+
 
