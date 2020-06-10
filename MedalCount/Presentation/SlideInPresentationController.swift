@@ -45,10 +45,10 @@ class SlideInPresentationController: UIPresentationController {
     
     switch direction {
     case .right:
-      //If presenting start from right, the displayed view's x-coordinate is ending at 1/3 points from its super view.
+      //If presenting start from right, the displayed view's x-coordinate  will end at 1/3 points from its super view.
       frame.origin.x = containerView!.frame.width*(1.0/3.0)
     case .bottom:
-      //If presenting start from bottom, the displayed view's y-coordinate is ending at 1/3 points from its super view.
+      //If presenting start from bottom, the displayed view's y-coordinate will ending at 1/3 points from its super view.
       frame.origin.y = containerView!.frame.height*(1.0/3.0)
     default:
       frame.origin = .zero
@@ -59,7 +59,11 @@ class SlideInPresentationController: UIPresentationController {
   //MARK: Step 10
   init(presentedViewController: UIViewController, presenting presentingViewController: UIViewController?, direction: PresentationDirection) {
     self.direction = direction
+    
+    //This method is the designated initializer for the presentation controller.
+    //You must call it from any custom initialization methods you define for your presentation controller subclasses.
     super.init(presentedViewController: presentedViewController, presenting: presentingViewController)
+    
     setupDimmingView()
   }
   
@@ -69,7 +73,11 @@ class SlideInPresentationController: UIPresentationController {
     guard let dimmingView = dimmingView else {
       return
     }
+    
     // 1
+    //Inserting dimmingView into presented containerView
+    //The container view is always an ancestor of the presented view controller’s view.
+    //When adding custom views to a presentation, add them to the container view.
     containerView?.insertSubview(dimmingView, at: 0)
 
     // 2
@@ -79,6 +87,11 @@ class SlideInPresentationController: UIPresentationController {
     dimmingView.trailingAnchor.constraint(equalTo: containerView!.trailingAnchor).isActive = true
     
     // 3
+    //When a presentation or dismissal is in progress,
+    //this method returns the transition coordinator object associated with that transition.
+    //You can use this object to create additional animations
+    //and synchronize them with the transition animations.
+    //Note: setupDimmingView() do the same thing, if changed its alpha value.
     guard let coordinator = presentedViewController.transitionCoordinator else {
       dimmingView.alpha = 1.0
       return
@@ -95,6 +108,7 @@ class SlideInPresentationController: UIPresentationController {
     //this method returns the transition coordinator object associated with that transition.
     //You can use this object to create additional animations
     //and synchronize them with the transition animations.
+    //Note: setupDimmingView() do the same thing, if changed its alpha value.
     guard let coordinator = presentedViewController.transitionCoordinator else {
       dimmingView.alpha = 0.0
       return

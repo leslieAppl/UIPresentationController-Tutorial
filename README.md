@@ -34,5 +34,6 @@
             - presentationController(forPresented: presenting: source: ) 
                 - //Here you instantiate a SlideInPresentationController with the direction from SlideInPresentationManager
 
-
+## Creating the Animation Controller
+- To slide in the Summer and Winter menus from the side
 
