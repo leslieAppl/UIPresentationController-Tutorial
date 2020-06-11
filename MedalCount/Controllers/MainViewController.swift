@@ -71,6 +71,10 @@ final class MainViewController: UIViewController {
       // MARK: Step 7
       controller.transitioningDelegate = slideInTransitioningDelegate
       controller.modalPresentationStyle = .custom //Style for presented view controller
+      
+      // MARK: Step 24
+      //To tell SlideInPresentationManager when to disable compact height
+      slideInTransitioningDelegate.disableCompactHeight = false
     }
     else if let controller = segue.destination as? MedalCountViewController {
       controller.medalWinners = presentedGames?.medalWinners
@@ -79,6 +83,11 @@ final class MainViewController: UIViewController {
       slideInTransitioningDelegate.direction = .bottom
       controller.transitioningDelegate = slideInTransitioningDelegate
       controller.modalPresentationStyle = .custom //Style for presented view controller
+      
+      // MARK: Step 25
+      //To tell SlideInPresentationManager when to disable compact height
+      slideInTransitioningDelegate.disableCompactHeight = true
+
     }
   }
 }

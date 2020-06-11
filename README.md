@@ -60,3 +60,6 @@
           dismissedFrame.origin.y = transitionContext.containerView.frame.size.height
         }
 
+## Adaptivity
+- Making the effect work beautifully on all devices and both orientations
+    - 

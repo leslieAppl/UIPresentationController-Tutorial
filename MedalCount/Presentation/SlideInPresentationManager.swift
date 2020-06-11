@@ -40,7 +40,9 @@ class SlideInPresentationManager: NSObject {
   // MARK: Step 3
   var direction: PresentationDirection = .left
   
-  
+  // MARK: Step 21
+  //To indicate if the presentation supports compact height
+  var disableCompactHeight = false
 }
 
 // MARK: Step 1
@@ -54,6 +56,11 @@ extension SlideInPresentationManager: UIViewControllerTransitioningDelegate {
     
     //Here you instantiate a SlideInPresentationController with the direction from SlideInPresentationManager
     let presentationController = SlideInPresentationController(presentedViewController: presented, presenting: presenting, direction: direction)
+    
+    //MARK: Step 23
+    //Setting SlideInPresentationManager as the presentation controller’s delegate
+    presentationController.delegate = self
+    
     return presentationController
   }
   
@@ -65,5 +72,27 @@ extension SlideInPresentationManager: UIViewControllerTransitioningDelegate {
   
   func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
     return SlideInPresentationAnimator(direction: direction, isPresentation: false)
+  }
+}
+
+// MARK: - UIAdaptivePresentationControllerDelegate
+extension SlideInPresentationManager: UIAdaptivePresentationControllerDelegate {
+  //MARK: Step 22
+  //Asks the delegate for the presentation style to use when the specified set of traits are active.
+  func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
+    if traitCollection.verticalSizeClass == .compact && disableCompactHeight {
+      return .overFullScreen
+    }
+    else {
+      return .none
+    }
+  }
+  
+  //MARK: Step 26
+  //This method returns a view controller that overrides the original controller to present
+  //Coorperating with adaptivePresentationStyle(for controller:) method asking the delegate for the view controller to display when adapting to the specified presentation style.
+  func presentationController(_ controller: UIPresentationController, viewControllerForAdaptivePresentationStyle style: UIModalPresentationStyle) -> UIViewController? {
+    guard case(.overFullScreen) = style else { return nil }
+    return UIStoryboard(name: "Main", bundle: nil).instantiateViewController(identifier: "RotateViewController")
   }
 }
