@@ -45,4 +45,18 @@
         //In the case of this app, dismissal mirrors presentation, 
         //so you only need one animation controller.
 
+        //Here is the core to make sliding in animation from two sides not from bottom rising up.
+        //Because you have set the animation route in terms of origin.x and .y.
+        let presentedFrame = transitionContext.finalFrame(for: controller)
+        var dismissedFrame = presentedFrame
+        switch direction {
+        case .left:
+          dismissedFrame.origin.x = -presentedFrame.width
+        case .right:
+          dismissedFrame.origin.x = transitionContext.containerView.frame.size.width
+        case .top:
+          dismissedFrame.origin.y = -presentedFrame.height
+        case .bottom:
+          dismissedFrame.origin.y = transitionContext.containerView.frame.size.height
+        }
 

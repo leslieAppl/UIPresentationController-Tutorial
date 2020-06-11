@@ -52,7 +52,7 @@ extension SlideInPresentationAnimator: UIViewControllerAnimatedTransitioning {
   func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
     // 1 If this is a presentation, the method asks the transitionContext for the view controller associated with .to. This is the view controller you’re moving to. If dismissal, it asks the transitionContext for the view controller associated with .from. This is the view controller you’re moving from.
     let key: UITransitionContextViewControllerKey = isPresentation ? .to : .from
-    
+
     guard let controller = transitionContext.viewController(forKey: key) else { return }
     
     // 2 If the action is a presentation, your code adds the view controller’s view to the view hierarchy. This code uses the transitionContext to get the container view.
@@ -61,6 +61,8 @@ extension SlideInPresentationAnimator: UIViewControllerAnimatedTransitioning {
     }
     
     // 3 Calculate the frames you’re animating from and to. The first line asks the transitionContext for the view’s frame when it’s presented. The rest of the section tackles the trickier task of calculating the view’s frame when it’s dismissed. This section sets the frame’s origin so it’s just outside the visible area based on the presentation direction.
+    //Here is the core to make sliding in animation from two sides not from bottom rising up.
+    //Because you have set the animation route in terms of origin.x and .y.
     let presentedFrame = transitionContext.finalFrame(for: controller)
     var dismissedFrame = presentedFrame
     switch direction {
