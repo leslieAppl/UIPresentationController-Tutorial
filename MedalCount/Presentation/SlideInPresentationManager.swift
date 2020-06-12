@@ -80,12 +80,17 @@ extension SlideInPresentationManager: UIAdaptivePresentationControllerDelegate {
   //MARK: Step 22
   //Asks the delegate for the presentation style to use when the specified set of traits are active.
   func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
+    
+    //disableCompactHeight = false in GamesTable View Controller
+    //disableCompactHeight = true in MedalCountViewController
+    //And when both View Controller above are at the verticalSizeClass.compact
     if traitCollection.verticalSizeClass == .compact && disableCompactHeight {
       return .overFullScreen
     }
     else {
       return .none
     }
+    
   }
   
   //MARK: Step 26
