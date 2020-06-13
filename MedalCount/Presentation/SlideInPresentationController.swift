@@ -28,6 +28,12 @@
 
 import UIKit
 
+//MARK: - UIPresentationController
+//An object that manages the transition animations and the presentation of view controllers onscreen.
+//From the time a view controller is presented until the time it is dismissed, UIKit uses a presentation controller to manage various aspects of the presentation process for that view controller.
+//The presentation controller can add its own animations on top of those provided by animator objects, it can respond to size changes, and it can manage other aspects of how the view controller is presented onscreen.
+//When you present a view controller using the present(_:animated:completion:) method, UIKit always manages the presentation process. Part of that process involves creating the presentation controller that is appropriate for the given presentation style.
+//You vend your custom presentation controller object through your view controller’s transitioning delegate. UIKit maintains a reference to your presentation controller object while the presented view controller is onscreen.
 class SlideInPresentationController: UIPresentationController {
   
   //MARK: Step 11
@@ -36,10 +42,10 @@ class SlideInPresentationController: UIPresentationController {
   //MARK: Step 9
   private var direction: PresentationDirection
   
-  //In addition to calculating the size of the presented view,
-  //you need to return its full frame.
   override var frameOfPresentedViewInContainerView: CGRect {
     //MARK: Step 17
+    //In addition to calculating the size of the presented view,
+    //you need to return its full frame.
     var frame: CGRect = .zero
     frame.size = size(forChildContentContainer: presentedViewController, withParentContainerSize: containerView!.bounds.size)
     
@@ -67,6 +73,8 @@ class SlideInPresentationController: UIPresentationController {
     setupDimmingView()
   }
   
+  //The default implementation of this method does nothing.
+  //Subclasses can override it and use it to add custom views to the view hierarchy and to create any animations associated with those views.
   override func presentationTransitionWillBegin() {
   
     //MARK: Step 13
@@ -76,8 +84,12 @@ class SlideInPresentationController: UIPresentationController {
     
     // 1
     //Inserting dimmingView into presented containerView
+    
+    //container view: The view in which the presentation occurs.
+    //UIKit sets the value of this property shortly after receiving the presentation controller from your transitioning delegate.
     //The container view is always an ancestor of the presented view controller’s view.
     //When adding custom views to a presentation, add them to the container view.
+    //During transition animations, the container view also contains the presenting view controller’s view.
     containerView?.insertSubview(dimmingView, at: 0)
 
     // 2
@@ -96,26 +108,25 @@ class SlideInPresentationController: UIPresentationController {
       dimmingView.alpha = 1.0
       return
     }
+    
+    //Runs the specified animations at the same time as the view controller transition animations.
+    //Use this method to perform animations that are not handled by the animator objects themselves.
+    //All of the animations you specify must occur inside the animation context’s container view (or one of its descendants).
+    //Use the containerView property of the context object to get the container view.
     coordinator.animate(alongsideTransition: { _ in
       self.dimmingView.alpha = 1.0
     })
+    
   }
   
   override func dismissalTransitionWillBegin() {
   
     //MARK: Step 14
-    //When a presentation or dismissal is in progress,
-    //this method returns the transition coordinator object associated with that transition.
-    //You can use this object to create additional animations
-    //and synchronize them with the transition animations.
-    //Note: setupDimmingView() do the same thing, if changed its alpha value.
     guard let coordinator = presentedViewController.transitionCoordinator else {
       dimmingView.alpha = 0.0
       return
     }
     
-    //Use this method to perform animations
-    //that are not handled by the animator objects themselves
     coordinator.animate(alongsideTransition: { (_) in
       //This gives the effect of fading the dimming view
       self.dimmingView.alpha = 0.0
@@ -123,17 +134,32 @@ class SlideInPresentationController: UIPresentationController {
     
   }
   
+  //Notifies the presentation controller that layout is about to begin on the views of the container view.
   //This override will respond to layout changes in the presentation controller's containerView.
+  //UIKit calls this method before adjusting the layout of the views in the container view.
   override func containerViewWillLayoutSubviews() {
     //MARK: Step 15
     //Here you reset the presented view’s frame to fit any changes to the containerView frame.
+    
+    
+    //presentedView?: The view to be animated by the animator objects during a transition.
+    //The default implementation of this method returns the presented view controller’s view.
+    //If you want to animate a different view, you may override this method and return that view.
+    //The view you specify must either be the presented view controller’s view or must be one of its ancestors.
+    //The view returned by this method is given to the animator objects, which are responsible for animating it onscreen.
+    //The animator objects retrieve the view using the view(forKey:) method of the context object provided by UIKit.
     presentedView?.frame = frameOfPresentedViewInContainerView
   }
   
-  //To give the size of the presented view controller's content
-  //to the presentation controller.
+  //To give the size of the presented view controller's content to the presentation controller.
+  //Container view controllers use this method to return the sizes for their child view controllers.
+  // It calls the method once for each child view controller embedded in the view controller.
+  //If you are implementing a custom container view controller, you should override this method and use it to return the sizes of the contained children.
+  //And SlideInPresentationController is the custom container view controller: UIPresentationController.
   override func size(forChildContentContainer container: UIContentContainer, withParentContainerSize parentSize: CGSize) -> CGSize {
-    //MARK: Setp 16
+    
+    //MARK: Setp 16 -> Setp 17
+    //Here calculating the size of the presented view.
     switch direction {
     case .left, .right:
       return CGSize(width: parentSize.width*(2.0/3.0), height: parentSize.height)

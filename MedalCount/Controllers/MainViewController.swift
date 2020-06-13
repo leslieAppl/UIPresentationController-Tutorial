@@ -69,8 +69,14 @@ final class MainViewController: UIViewController {
       controller.delegate = self
       
       // MARK: Step 7
+      //UIViewControllerTransitioningDelegate Protocol:
+      //When you want to present a view controller using a custom modal presentation type, set its modalPresentationStyle property to custom
+      //and assign an object that conforms to this protocol to its transitioningDelegate property.
+      //The transitioning delegate object is a custom object that you provide and that conforms to the UIViewControllerTransitioningDelegate protocol
       controller.transitioningDelegate = slideInTransitioningDelegate
-      controller.modalPresentationStyle = .custom //Style for presented view controller
+      
+      //When the view controller’s modalPresentationStyle property is UIModalPresentationStyle.custom, UIKit uses the object in this property to facilitate transitions and presentations for the view controller
+      controller.modalPresentationStyle = .custom
       
       // MARK: Step 24
       //To tell SlideInPresentationManager when to disable compact height
@@ -82,7 +88,7 @@ final class MainViewController: UIViewController {
       // MARK: Step 8
       slideInTransitioningDelegate.direction = .bottom
       controller.transitioningDelegate = slideInTransitioningDelegate
-      controller.modalPresentationStyle = .custom //Style for presented view controller
+      controller.modalPresentationStyle = .custom
       
       // MARK: Step 25
       //To tell SlideInPresentationManager when to disable compact height
