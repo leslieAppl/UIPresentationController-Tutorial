@@ -27,8 +27,7 @@
 /// THE SOFTWARE.
 
 import UIKit
-//MARK: - Managing Presentation Controller | Adaptive Presentation | Animation controller |
-// MARK: Step 2
+//  MARK: Step 2
 enum PresentationDirection {
   case left
   case top
@@ -37,44 +36,48 @@ enum PresentationDirection {
 }
 
 class SlideInPresentationManager: NSObject {
-  // MARK: Step 3
+  //  MARK: Step 3
   var direction: PresentationDirection = .left
   
-  // MARK: Step 21
-  //To indicate if the presentation supports compact height
+  //  MARK: Step 21
+  /// To indicate if the presentation supports compact height
   var disableCompactHeight = false
 }
 
-// MARK: Step 1
-// MARK: - UIViewControllerTransitioningDelegate
+//  MARK: Step 1
+//  MARK: - UIViewControllerTransitioningDelegate
+/// 1.
+/// When you want to present a view controller using a custom modal presentation type, set its modalPresentationStyle property to custom and assign an object that conforms to this protocol to its transitioningDelegate property. - Step 7, 8
+/// 2.
+/// When you present that view controller, UIKit queries your [transitioning delegate] for the objects to use when animating the view controller into position.
+/// 3.
+/// When implementing your [transitioning delegate object], you can return different [animator objects] depending on whether a view controller is being presented or dismissed. All transitions use a transition animator object—an object that conforms to the UIViewControllerAnimatedTransitioning protocol—to implement the basic animations. - Step 20
+
 extension SlideInPresentationManager: UIViewControllerTransitioningDelegate {
   
-  //MARK: Step 18
-  //When you present a view controller using the UIModalPresentationStyle.custom presentation style, the system calls this method and asks for the presentation controller that manages your custom style.
-  //If you implement this method, use it to create and return the custom presentation controller object that you want to use to manage the presentation process.
+  //  MARK: Step 18
+  /// When you present a view controller using the UIModalPresentationStyle.custom presentation style, the system calls this method and asks for the presentation controller that manages your custom style. If you implement this method, use it to create and return the custom presentation controller object that you want to use to manage the presentation process.
   func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
     
-    //Here you instantiate a SlideInPresentationController with the direction from SlideInPresentationManager
+    /// Here you instantiate a SlideInPresentationController with the direction from SlideInPresentationManager
     let presentationController = SlideInPresentationController(presentedViewController: presented, presenting: presenting, direction: direction)
     
-    //MARK: Step 23
-    //The delegate object for managing adaptive presentations.
-    //When the app’s size changes, the presentation controller works with this delegate object to determine an appropriate response.
-    //Note: View controllers presented using the UIModalPresentationStyle.formSheet, UIModalPresentationStyle.popover, or UIModalPresentationStyle.custom style must change to use one of the full-screen presentation styles instead.
-    //The object you assign to this property must conform to the UIAdaptivePresentationControllerDelegate protocol.
+    //  MARK: Step 23
+    /// The delegate object for managing adaptive presentations. The object you assign to this property must conform to the UIAdaptivePresentationControllerDelegate protocol. When the app’s size changes, the presentation controller works with this delegate object to determine an appropriate response.
+    /// Note: View controllers presented using the UIModalPresentationStyle.formSheet, UIModalPresentationStyle.popover, or UIModalPresentationStyle.custom style must change to use one of the full-screen presentation styles instead.
     presentationController.delegate = self
     
     return presentationController
   }
   
-  //MARK: Step 20
-  //Hooking up the animation controller
-  //Asks your delegate for the transition animator object to use when presenting a view controlle
+  //  MARK: Step 20
+  /// Hooking up the animation controller
+  /// Asks your delegate for the transition [animator object] to use when presenting a view controlle
   func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
     return SlideInPresentationAnimator(direction: direction, isPresentation: true)
   }
   
-  //Asks your delegate for the transition animator object to use when dismissing a view controller.
+  /// Asks your delegate for the transition [animator object] to use when dismissing a view controller.
   func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
     return SlideInPresentationAnimator(direction: direction, isPresentation: false)
   }
@@ -83,14 +86,11 @@ extension SlideInPresentationManager: UIViewControllerTransitioningDelegate {
 // MARK: - UIAdaptivePresentationControllerDelegate
 extension SlideInPresentationManager: UIAdaptivePresentationControllerDelegate {
   
-  //MARK: Step 22
-  //Asks the delegate for the presentation style to use when the specified set of traits are active.
-  //Note: View controllers presented using the UIModalPresentationStyle.formSheet, UIModalPresentationStyle.popover, or UIModalPresentationStyle.custom style must change to use one of the full-screen presentation styles instead (from delegate Discussion.)
+  //  MARK: Step 22
+  /// Asks the delegate for the presentation style to use when the specified set of traits are active.
+  /// Note: View controllers presented using the UIModalPresentationStyle.formSheet, UIModalPresentationStyle.popover, or UIModalPresentationStyle.custom style must change to use one of the full-screen presentation styles instead (from delegate Discussion.)
   func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
     
-    //Both View Controller above are at the verticalSizeClass.compact
-    //disableCompactHeight = true in MedalCountViewController
-    //disableCompactHeight = false in GamesTable View Controller
     if traitCollection.verticalSizeClass == .compact && disableCompactHeight {
       return .overFullScreen
     }
@@ -100,9 +100,9 @@ extension SlideInPresentationManager: UIAdaptivePresentationControllerDelegate {
     
   }
   
-  //MARK: Step 26
-  //This method returns a view controller that overrides the original controller to present
-  //Coorperating with adaptivePresentationStyle(for controller:) method asking the delegate for the view controller to display when adapting to the specified presentation style.
+  //  MARK: Step 26
+  /// Asks the delegate for the view controller to display when adapting to the specified presentation style. This method returns a view controller that overrides the original controller to present.
+  /// This method coorperats with adaptivePresentationStyle(for controller:) method.
   func presentationController(_ controller: UIPresentationController, viewControllerForAdaptivePresentationStyle style: UIModalPresentationStyle) -> UIViewController? {
     guard case(.overFullScreen) = style else { return nil }
     return UIStoryboard(name: "Main", bundle: nil).instantiateViewController(identifier: "RotateViewController")

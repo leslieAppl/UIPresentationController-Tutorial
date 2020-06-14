@@ -29,14 +29,14 @@
 import UIKit
 
 final class MainViewController: UIViewController {
-  // MARK: - IBOutlets
+  //  MARK: - IBOutlets
   @IBOutlet weak var yearLabel: UILabel!
   @IBOutlet weak var hostLabel: UILabel!
   @IBOutlet weak var medalCountButton: UIButton!
   @IBOutlet weak var logoImageView: UIImageView!
 
-  // MARK: - Properties
-  // MARK: Step 4
+  //  MARK: - Properties
+  //  MARK: Step 4
   lazy var slideInTransitioningDelegate = SlideInPresentationManager()
   private let dataStore = GamesDataStore()
   private var presentedGames: Games? {
@@ -66,20 +66,20 @@ final class MainViewController: UIViewController {
         // MARK: Step 6
         slideInTransitioningDelegate.direction = .right
       }
+      
       controller.delegate = self
       
-      // MARK: Step 7
-      //UIViewControllerTransitioningDelegate Protocol:
-      //When you want to present a view controller using a custom modal presentation type, set its modalPresentationStyle property to custom
-      //and assign an object that conforms to this protocol to its transitioningDelegate property.
-      //The transitioning delegate object is a custom object that you provide and that conforms to the UIViewControllerTransitioningDelegate protocol
+      //  MARK: Step 7
+      /// UIViewControllerTransitioningDelegate Protocol:
+      /// When you want to present a view controller using a custom modal presentation type, set its modalPresentationStyle property to custom and assign an object that conforms to this protocol to its transitioningDelegate property.
+      /// The transitioning delegate object is a custom object that you provide and that conforms to the UIViewControllerTransitioningDelegate protocol
       controller.transitioningDelegate = slideInTransitioningDelegate
       
-      //When the view controller’s modalPresentationStyle property is UIModalPresentationStyle.custom, UIKit uses the object in this property to facilitate transitions and presentations for the view controller
+      /// When the view controller’s modalPresentationStyle property is UIModalPresentationStyle.custom, UIKit uses the object in this property to facilitate transitions and presentations for the view controller
       controller.modalPresentationStyle = .custom
       
       // MARK: Step 24
-      //To tell SlideInPresentationManager when to disable compact height
+      /// To tell SlideInPresentationManager when to disable compact height
       slideInTransitioningDelegate.disableCompactHeight = false
     }
     else if let controller = segue.destination as? MedalCountViewController {
@@ -91,7 +91,7 @@ final class MainViewController: UIViewController {
       controller.modalPresentationStyle = .custom
       
       // MARK: Step 25
-      //To tell SlideInPresentationManager when to disable compact height
+      /// To tell SlideInPresentationManager when to disable compact height
       slideInTransitioningDelegate.disableCompactHeight = true
 
     }
@@ -101,7 +101,7 @@ final class MainViewController: UIViewController {
 // MARK: - Private
 private extension MainViewController {
   func configurePresentedGames() {
-    //Property Observer to adjust view corisponding with situations
+    /// Property Observer to adjust view coorisponding with situations
     guard let presentedGames = presentedGames else {
       logoImageView.image = UIImage(named: "medals")
       hostLabel.text = nil
