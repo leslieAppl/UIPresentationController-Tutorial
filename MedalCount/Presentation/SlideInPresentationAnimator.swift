@@ -78,8 +78,11 @@ extension SlideInPresentationAnimator: UIViewControllerAnimatedTransitioning {
     }
     
     /// 3
-    /// Calculate the frames you’re animating from and to. The first line asks the transitionContext for the view’s frame when it’s presented. The rest of the section tackles the trickier task of calculating the view’s frame when it’s dismissed. This section sets the frame’s origin so it’s just outside the visible area based on the presentation direction.
+    /// Calculate the frames you’re animating .from and .to.
+    /// The first line asks the transitionContext for the view’s frame when it’s presented.
     let presentedFrame = transitionContext.finalFrame(for: controller)
+    
+    ///The rest of the section tackles the trickier task of calculating the view’s frame when it’s dismissed. This section sets the frame’s origin so it’s just outside the visible area based on the presentation direction.
     var dismissedFrame = presentedFrame
     switch direction {
     case .left:

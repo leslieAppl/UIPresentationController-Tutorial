@@ -67,6 +67,7 @@ final class MainViewController: UIViewController {
         slideInTransitioningDelegate.direction = .right
       }
       
+      /// Delegate: assiging self instance to the protocol delegate
       controller.delegate = self
       
       //  MARK: Step 7
@@ -118,7 +119,11 @@ private extension MainViewController {
 }
 
 // MARK: - GamesTableViewControllerDelegate
+
+/// Delegate:  conforming source protocol
 extension MainViewController: GamesTableViewControllerDelegate {
+  
+  /// Delegate: overriding  delegate protocol method
   func gamesTableViewController(controller: GamesTableViewController, didSelectGames selectedGames: Games) {
     presentedGames = selectedGames
     dismiss(animated: true)

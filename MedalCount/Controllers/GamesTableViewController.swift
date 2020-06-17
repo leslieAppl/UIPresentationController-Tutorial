@@ -28,12 +28,16 @@
 
 import UIKit
 
+/// Delegate: definding source protocol
 protocol GamesTableViewControllerDelegate: AnyObject {
+  /// Delegate: defining protocol method
   func gamesTableViewController(controller: GamesTableViewController, didSelectGames selectedGames: Games)
 }
 
 final class GamesTableViewController: UITableViewController {
   // MARK: - Properties
+  
+  /// Delegate:  definding delegate property
   weak var delegate: GamesTableViewControllerDelegate?
   var gamesArray: [Games]!
 }
@@ -61,6 +65,8 @@ extension GamesTableViewController {
   override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     tableView.deselectRow(at: indexPath, animated: true)
     let selectedGames = gamesArray[indexPath.row]
+    
+    /// Delegate: calling delegate protocol method
     delegate?.gamesTableViewController(controller: self, didSelectGames: selectedGames)
   }
 }

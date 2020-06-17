@@ -52,7 +52,6 @@ class SlideInPresentationManager: NSObject {
 /// When you present that view controller, UIKit queries your [transitioning delegate] for the objects to use when animating the view controller into position.
 /// 3.
 /// When implementing your [transitioning delegate object], you can return different [animator objects] depending on whether a view controller is being presented or dismissed. All transitions use a transition animator object—an object that conforms to the UIViewControllerAnimatedTransitioning protocol—to implement the basic animations. - Step 20
-
 extension SlideInPresentationManager: UIViewControllerTransitioningDelegate {
   
   //  MARK: Step 18
